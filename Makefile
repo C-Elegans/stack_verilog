@@ -1,4 +1,4 @@
-cpu: cpu.v testbench.v tasks.v mem.hex
+cpu: cpu.v testbench.v tasks.v mem.hex defines.vh
 	iverilog -g 2009 -o cpu cpu.v testbench.v 
 	vvp cpu	
 mem.hex:data

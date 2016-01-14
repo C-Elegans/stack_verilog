@@ -1,3 +1,4 @@
+`include "defines.vh"
 module cpu(clk, address, data_in, data_out, LEDS);
 	input clk;
 	output reg [15:0] address;
@@ -13,24 +14,24 @@ module cpu(clk, address, data_in, data_out, LEDS);
 	reg [15:0] instruction;
 	always @(posedge clk) begin
 	case(state)
-		0: begin
+		`fetch: begin
 			
 			address <= address + 1;
 			instruction <= data_in;
 			if(data_in === 16'bx && address != 0) $finish();
-			if(data_in[15:13]) state <= 1;
-			else state <= 3;
+			if(data_in[15:13]) state <= `word_cycle1;
+			else state <= `byte1_cycle1;
 			end
-		1: begin
-			push(instruction[14:0]);
-			state <= 0;
+		`word_cycle1: begin
+			if(instruction[15]) begin
+				push(instruction[14:0]); //push
+				state <= 0;
 			end
-		3: begin 
-		reg [15:0] temp;
-		pop(temp);
-		
-		state <= 0;
-		end
+			else state <= 0; //call or jump
+			end
+		`byte1_cycle1: begin 
+			
+			end
 		default: state <= 0;
 			
 	endcase
