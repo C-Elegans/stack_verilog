@@ -6,3 +6,4 @@ asm.s
 mem.hex
 data
 data_rev
+*.s

@@ -45,7 +45,14 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				//$display("offset %x, ip: %d", temp, ip+temp);
 				
 				ip <= ip + temp +2;
-				ip[0] <=0;
+				
+				state <= 0;
+			end
+			else if(instruction[14:13] == 2) begin//call
+				reg [15:0] temp;
+				temp = {{3{instruction[12]}},instruction[12:0]};
+				rpush(ip+2);
+				ip <= ip + temp + 2;
 				state <= 0;
 			end
 			else state <= 0; //call or jump
@@ -68,6 +75,11 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				temp = `TOS;
 				`TOS = `NOS;
 				`NOS = temp;
+			end
+			//`ROT:
+			`RET: begin
+				rpop(ip);
+			
 			end
 			endcase
 			if(ip[0])

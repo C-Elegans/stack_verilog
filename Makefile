@@ -3,8 +3,8 @@ cpu: cpu.v testbench.v tasks.v mem.hex defines.vh
 	vvp cpu	
 mem.hex:data_rev
 	dump data_rev > mem.hex
-data:asm.s
-	stack_as asm.s data
+data:main.f
+	forthc main.f data
 data_rev:data
 	gobjcopy -I binary -O binary --reverse-bytes=2 data data_rev
 clean:
