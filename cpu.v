@@ -1,7 +1,7 @@
 `include "defines.vh"
 module cpu(clk, address, data_in, data_out, LEDS);
 	input clk;
-	output reg [15:0] address;
+	output reg [14:0] address;
 	input [15:0] data_in;
 	output [15:0] data_out;
 	output [7:0] LEDS;
@@ -12,17 +12,17 @@ module cpu(clk, address, data_in, data_out, LEDS);
 	reg [8:0] op;
 	reg [15:0] temp1;
 	reg [15:0] temp2;
-	reg cycle;
+	reg [15:0] ip;
+	
 	initial begin
-	 address = 0;
+	 ip = 0;
 	 state = 0;
-	 cycle = 0;
 	end
 	always @(posedge clk) begin
 	case(state)
 		`fetch: begin
-			cycle <= 0;
-			address <= address + 1;
+			ip[0] <= 0;
+			ip <= ip +2;
 			instruction <= data_in;
 			op <= data_in[15:8];
 			if(data_in === 16'bx && address != 0) $finish();
@@ -54,11 +54,11 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				`NOS = temp;
 			end
 			endcase
-			if(cycle)
+			if(ip[0])
 			state <= 0;
 			else begin
 			op <= instruction[7:0];
-			cycle <= 1;
+			ip[0] <= 1;
 			end
 			end
 		default: state <= 0;
@@ -66,4 +66,5 @@ module cpu(clk, address, data_in, data_out, LEDS);
 	endcase
 	
 	end
+	assign address = ip[15:1];
 endmodule
