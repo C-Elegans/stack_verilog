@@ -1,10 +1,9 @@
 `define fetch 0
 `define word_cycle1 1
 `define word_cycle1 2
-`define byte1_cycle1 3
-`define byte1_cycle2 4
-`define byte2_cycle1 5
-`define byte2_cycle2 6
+`define byte_cycle1 3
+`define byte_cycle2 4
+
 
 
 `define NOP 0
