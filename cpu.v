@@ -44,7 +44,7 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				temp = {{3{instruction[12]}},instruction[12:0]};
 				//$display("offset %x, ip: %d", temp, ip+temp);
 				
-				ip <= ip + temp ;
+				ip <= ip + temp +2;
 				ip[0] <=0;
 				state <= 0;
 			end
