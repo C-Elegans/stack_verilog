@@ -92,6 +92,26 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				rpop(ip);
 			
 			end
+			`LT: begin
+				reg result;
+				result = `NOS < `TOS;
+				sp = sp - 2;
+				push({16{result}});
+			end
+			`GT: begin
+				reg result;
+				result = `NOS > `TOS;
+				sp = sp - 2;
+				push({16{result}});
+			end
+			`EQ: begin
+				reg result;
+				result = `NOS == `TOS;
+				sp = sp - 2;
+				push({16{result}});
+			end
+
+			
 			endcase
 			if(ip[0])
 			state <= 0;
