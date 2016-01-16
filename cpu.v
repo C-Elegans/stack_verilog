@@ -136,7 +136,8 @@ module cpu(clk, address, data_in, data_out, LEDS, wr);
 				extra_cycle = 1;
 				
 				pop(temp3);
-				address = {1'b0,temp3[15:1]};
+				address =temp3>>1;
+				
 			end
 			`STORE:begin
 				reg [15:0] temp3;
@@ -145,7 +146,9 @@ module cpu(clk, address, data_in, data_out, LEDS, wr);
 				
 				pop(temp3);
 				address = {1'b0,temp3[15:1]};
+				
 				pop(data_out);
+				
 			end
 			endcase
 			if(extra_cycle) state = `byte_cycle2;
@@ -161,10 +164,12 @@ module cpu(clk, address, data_in, data_out, LEDS, wr);
 			
 			extra_cycle = 0;
 			
-			address[14:0] = ip[15:1];
-			address[15] = 0;
+			
 			case(op)
-				`MEMFETCH: push(data_in);
+				`MEMFETCH: begin 
+					push(data_in);
+					$display("read data: %d address: %d",data_in,address);
+				end
 				`STORE: wr <= 0;
 			endcase
 			if(!ip[0])
@@ -174,6 +179,8 @@ module cpu(clk, address, data_in, data_out, LEDS, wr);
 				state <= `byte_cycle1;
 				$display("next_byte");
 			end
+			address[14:0] = ip[15:1];
+			address[15] = 0;
 			
 		end
 		default: state <= 0;
