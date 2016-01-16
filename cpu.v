@@ -120,6 +120,9 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				rpop(`TOS);
 			end
 			`RCP: push(`RTOS);
+			`AND: pop2push(`TOS & `NOS);
+			`OR: pop2push(`TOS | `NOS);
+			`XOR: pop2push(`TOS ^ `NOS);
 			endcase
 			if(ip[0])
 			state <= 0;

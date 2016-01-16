@@ -15,6 +15,6 @@ always #1 begin
 	clk = !clk;
 	data <= Mem[address];
 	end
-initial #200 $finish();
+initial #500 $finish();
 
 endmodule 
