@@ -55,7 +55,15 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				ip <= ip + temp + 2;
 				state <= 0;
 			end
-			else state <= 0; //call or jump
+			else begin //cjump
+				reg [15:0] temp;
+				pop(temp);
+				if(temp == 0) begin
+					temp = {{3{instruction[12]}},instruction[12:0]};
+					ip <= ip + temp +2;
+				end
+				state <= 0; //call or jump
+			end
 			end
 		`byte_cycle1: begin 
 			ip <= ip + 1;
