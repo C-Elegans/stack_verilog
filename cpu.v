@@ -124,6 +124,8 @@ module cpu(clk, address, data_in, data_out, LEDS);
 			`XOR: pop2push(`TOS ^ `NOS);
 			`LSHIFT: pop2push(`NOS << `TOS);
 			`RSHIFT: pop2push(`NOS >> `TOS);
+			`MUL: pop2push(`TOS * `NOS);
+			
 			endcase
 			if(ip[0])
 			state <= 0;
