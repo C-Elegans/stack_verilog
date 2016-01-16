@@ -79,12 +79,15 @@ module cpu(clk, address, data_in, data_out, LEDS);
 			`SUB:pop2push(`NOS - `TOS);
 			`DUP:push(`TOS);
 			`SWAP:begin
-				reg [15:0] temp;
-				temp = `TOS;
-				`TOS = `NOS;
-				`NOS = temp;
+				`TOS <= `NOS;
+				`NOS <= `TOS;
 			end
-			//`ROT:
+			`ROT: begin
+				
+				`TOS <= `ROS;
+				`ROS <= `NOS;
+				`NOS <= `TOS;
+			end
 			`RET: begin
 				rpop(ip);
 			

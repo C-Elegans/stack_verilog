@@ -1,6 +1,6 @@
 `define TOS stack[sp-1]
 `define NOS stack[sp-2]
-
+`define ROS stack[sp-3]
 
 reg [15:0] stack[5:0];
 reg [15:0] rstack[5:0];
