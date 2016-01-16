@@ -2,6 +2,9 @@
 `define NOS stack[sp-2]
 `define ROS stack[sp-3]
 
+
+`define RTOS rstack[rsp-1]
+
 reg [15:0] stack[5:0];
 reg [15:0] rstack[5:0];
 reg [5:0] sp;

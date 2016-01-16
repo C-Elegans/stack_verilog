@@ -111,8 +111,15 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				push({16{result}});
 			end
 			`NEG: `TOS <= ~`TOS;
-
-			
+			`RPUSH: begin
+				rpush(`TOS);
+				sp = sp - 1;
+			end
+			`RPOP: begin
+				sp = sp + 1;
+				rpop(`TOS);
+			end
+			`RCP: push(`RTOS);
 			endcase
 			if(ip[0])
 			state <= 0;
