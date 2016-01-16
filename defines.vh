@@ -29,7 +29,7 @@
 `define LSHIFT 20
 `define RSHIFT 21
 `define MUL 22
-`define FETCH 23
+`define MEMFETCH 23
 `define STORE 24
 
 `define JUMP 32

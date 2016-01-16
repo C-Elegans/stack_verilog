@@ -1,10 +1,11 @@
 `include "defines.vh"
-module cpu(clk, address, data_in, data_out, LEDS);
+module cpu(clk, address, data_in, data_out, LEDS, wr);
 	input clk;
 	output reg [15:0] address;
 	input [15:0] data_in;
-	output [15:0] data_out;
+	output reg [15:0] data_out;
 	output [7:0] LEDS;
+	output reg wr;
 	`include "tasks.v"
 	
 	reg [2:0] state;
@@ -13,17 +14,22 @@ module cpu(clk, address, data_in, data_out, LEDS);
 	reg [15:0] temp1;
 	reg [15:0] temp2;
 	reg [15:0] ip;
+	reg extra_cycle;
 	
 	initial begin
 	 ip = 0;
 	 state = 0;
+	 extra_cycle = 0;
+	 wr = 0;
 	end
 	always @(posedge clk) begin
 	//$display("instruction: %x, ip: %x",instruction,ip);
 	case(state)
 		
 		`fetch: begin
-			
+			extra_cycle = 0;
+			address[14:0] = ip[15:1];
+			address[15] = 0;
 			instruction <= data_in;
 			op <= data_in[15:8];
 			if(data_in === 16'bx && address != 0) $finish();
@@ -125,19 +131,55 @@ module cpu(clk, address, data_in, data_out, LEDS);
 			`LSHIFT: pop2push(`NOS << `TOS);
 			`RSHIFT: pop2push(`NOS >> `TOS);
 			`MUL: pop2push(`TOS * `NOS);
-			
+			`MEMFETCH: begin
+				reg [15:0] temp3;
+				extra_cycle = 1;
+				
+				pop(temp3);
+				address = {1'b0,temp3[15:1]};
+			end
+			`STORE:begin
+				reg [15:0] temp3;
+				extra_cycle = 1;
+				wr = 1;
+				
+				pop(temp3);
+				address = {1'b0,temp3[15:1]};
+				pop(data_out);
+			end
 			endcase
-			if(ip[0])
-			state <= 0;
+			if(extra_cycle) state = `byte_cycle2;
+			else
+				if(ip[0])
+				state <= 0;
+				else begin
+				op <= instruction[7:0];
+				end
+			end
+			
+		`byte_cycle2:begin
+			
+			extra_cycle = 0;
+			
+			address[14:0] = ip[15:1];
+			address[15] = 0;
+			case(op)
+				`MEMFETCH: push(data_in);
+				`STORE: wr <= 0;
+			endcase
+			if(!ip[0])
+				state <= 0;
 			else begin
-			op <= instruction[7:0];
+				op <= instruction[7:0];
+				state <= `byte_cycle1;
+				$display("next_byte");
 			end
-			end
+			
+		end
 		default: state <= 0;
 			
 	endcase
 	
 	end
-	assign address[14:0] = ip[15:1];
-	assign address[15] = 0;
+	
 endmodule
