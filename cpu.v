@@ -71,7 +71,6 @@ module cpu(clk, address, data_in, data_out, LEDS);
 			//print_stack;
 			case(op) 
 			`OUT: begin
-			
 				pop(temp1);
 				$display("%d",temp1);
 			end
@@ -123,6 +122,8 @@ module cpu(clk, address, data_in, data_out, LEDS);
 			`AND: pop2push(`TOS & `NOS);
 			`OR: pop2push(`TOS | `NOS);
 			`XOR: pop2push(`TOS ^ `NOS);
+			`LSHIFT: pop2push(`NOS << `TOS);
+			`RSHIFT: pop2push(`NOS >> `TOS);
 			endcase
 			if(ip[0])
 			state <= 0;
