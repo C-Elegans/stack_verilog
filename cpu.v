@@ -110,6 +110,7 @@ module cpu(clk, address, data_in, data_out, LEDS);
 				sp = sp - 2;
 				push({16{result}});
 			end
+			`NEG: `TOS <= ~`TOS;
 
 			
 			endcase
