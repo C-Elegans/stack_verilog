@@ -1,0 +1,4 @@
+: ADD1 1 + . ;
+3 0 DO DUP . LOOP 
+5 ADD1
+3 ADD1
