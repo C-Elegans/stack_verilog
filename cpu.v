@@ -40,7 +40,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			
 			end
 		`word_cycle1: begin
-			$display("instruction %x, ip: %d",instruction,ip);
+			//$display("instruction %x, ip: %d",instruction,ip);
 			//print_stack;
 			ip <= ip + 2;
 			if(instruction[15]) begin
@@ -59,7 +59,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			else if(instruction[14:13] == 2) begin//call
 				reg [15:0] temp;
 				temp = {{3{instruction[12]}},instruction[12:0]};
-				rpush(ip);
+				rpush(ip-2);
 				ip <= ip + temp;
 				address <= 0;
 				
@@ -68,11 +68,12 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			else begin //cjump
 				reg [15:0] temp;
 				pop(temp);
-				$display("Condition: %d",temp);
+				//$display("Condition: %d",temp);
 				if(temp == 0) begin
 					$display("Branch Taken");
 					temp = {{3{instruction[12]}},instruction[12:0]};
 					ip <= ip + temp +2;
+					address <= 0;
 				end
 				state <= 0; //call or jump
 			end
@@ -80,7 +81,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 		`byte_cycle1: begin 
 			ip <= ip + 1;
 			//$display("instruction %x, cycle: %d",instruction, ip[0]);
-			$display("instruction: %02x, ip: %d", op, ip);
+			//$display("instruction: %02x, ip: %d", op, ip);
 			//print_stack;
 			Lr <= 0;
 			case(op) 
@@ -107,7 +108,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				
 				ip <= `RTOS;
 				address <= 0;
-				$display("Rpop: %d",`RTOS);
+				//$display("Rpop: %d",`RTOS);
 				rsp <= rsp - 1;
 				
 			end
