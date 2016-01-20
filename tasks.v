@@ -33,6 +33,11 @@ task pop;
 	val = stack[sp];
 	end
 endtask
+task popn;
+	begin
+	sp <= sp -1;
+	end
+endtask
 
 task pop2push;
 	input [15:0] val;

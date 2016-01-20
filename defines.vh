@@ -36,3 +36,5 @@
 `define CALL 64
 `define CJUMP 96
 `define PUSH 128
+
+`define assert(condition) if(condition === 0) begin $error("Assertion failed");$fatal(0,-1); end

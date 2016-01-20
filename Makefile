@@ -10,7 +10,7 @@ cpu: cpu.v testbench.v tasks.v mem.hex defines.vh
 mem.hex:data_rev
 	dump data_rev > mem.hex
 data:main.f
-	forthc main.f data
+	forthc -i main.f -o data -q
 data_rev:data
 	$(COPY) -I binary -O binary --reverse-bytes=2 data data_rev
 clean:

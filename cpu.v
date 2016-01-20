@@ -1,11 +1,12 @@
 `include "defines.vh"
-module cpu(clk, address, data_in, data_out, LEDS, wr);
+module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 	input clk;
 	output reg [15:0] address;
 	input [15:0] data_in;
 	output reg [15:0] data_out;
-	output [7:0] LEDS;
+	output reg [7:0] LEDS;
 	output reg wr;
+	output reg Lr;
 	`include "tasks.v"
 	
 	reg [2:0] state;
@@ -27,6 +28,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr);
 	case(state)
 		
 		`fetch: begin
+			
 			extra_cycle = 0;
 			address[14:0] = ip[15:1];
 			address[15] = 0;
@@ -75,10 +77,12 @@ module cpu(clk, address, data_in, data_out, LEDS, wr);
 			ip <= ip + 1;
 			//$display("instruction %x, cycle: %d",instruction, ip[0]);
 			//print_stack;
+			Lr <= 0;
 			case(op) 
 			`OUT: begin
-				pop(temp1);
-				$display("%d",temp1);
+				popn();
+				LEDS <= `TOS;
+				Lr <= 1;
 			end
 			`ADD:pop2push(`TOS + `NOS);
 			`SUB:pop2push(`NOS - `TOS);
@@ -94,6 +98,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr);
 				`NOS <= `TOS;
 			end
 			`RET: begin
+				
 				rpop(ip);
 			
 			end
