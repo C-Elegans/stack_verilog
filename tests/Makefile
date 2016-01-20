@@ -3,7 +3,7 @@ COPY=objcopy
 ifeq ($(OS),Darwin)
 	COPY=gobjcopy
 endif
-TESTS = add.test sub.test stack.test
+TESTS = add.test sub.test stack.test bits.test
 all: $(TESTS)
 	
 
@@ -19,4 +19,4 @@ all: $(TESTS)
 	$(COPY) -I binary -O binary --reverse-bytes=2 $< $@
 
 clean:
-	rm *.o *.or *.hex *.test
+	-rm *.o *.or *.hex *.test

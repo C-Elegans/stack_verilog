@@ -8,3 +8,7 @@ data
 data_rev
 *.s
 main.f
+*.o
+*.hex 
+*.or
+*.test

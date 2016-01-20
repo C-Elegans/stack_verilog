@@ -14,6 +14,9 @@ data:main.f
 data_rev:data
 	$(COPY) -I binary -O binary --reverse-bytes=2 data data_rev
 clean:
-	rm cpu
-	rm data
-	rm mem.hex
+	-rm cpu
+	-rm data
+	-rm mem.hex
+	-cd tests && make clean
+check:
+	cd tests && make
