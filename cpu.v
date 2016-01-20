@@ -72,7 +72,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				if(temp == 0) begin
 					$display("Branch Taken");
 					temp = {{3{instruction[12]}},instruction[12:0]};
-					ip <= ip + temp +2;
+					ip <= ip + temp -2;
 					address <= 0;
 				end
 				state <= 0; //call or jump
