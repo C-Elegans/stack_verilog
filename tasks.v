@@ -60,5 +60,6 @@ task rpop;
 	begin
 	rsp = rsp - 1;
 	val = rstack[rsp];
+	$display("Rpop: %d",val);
 	end
 endtask

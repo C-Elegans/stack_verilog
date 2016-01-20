@@ -40,7 +40,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			
 			end
 		`word_cycle1: begin
-			//$display("instruction %x",instruction);
+			$display("instruction %x, ip: %d",instruction,ip);
 			//print_stack;
 			ip <= ip + 2;
 			if(instruction[15]) begin
@@ -53,20 +53,24 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				//$display("offset %x, ip: %d", temp, ip+temp);
 				
 				ip <= ip + temp +2;
-				
+				address <= 0;
 				state <= 0;
 			end
 			else if(instruction[14:13] == 2) begin//call
 				reg [15:0] temp;
 				temp = {{3{instruction[12]}},instruction[12:0]};
-				rpush(ip+2);
-				ip <= ip + temp + 2;
+				rpush(ip);
+				ip <= ip + temp;
+				address <= 0;
+				
 				state <= 0;
 			end
 			else begin //cjump
 				reg [15:0] temp;
 				pop(temp);
+				$display("Condition: %d",temp);
 				if(temp == 0) begin
+					$display("Branch Taken");
 					temp = {{3{instruction[12]}},instruction[12:0]};
 					ip <= ip + temp +2;
 				end
@@ -76,6 +80,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 		`byte_cycle1: begin 
 			ip <= ip + 1;
 			//$display("instruction %x, cycle: %d",instruction, ip[0]);
+			$display("instruction: %02x, ip: %d", op, ip);
 			//print_stack;
 			Lr <= 0;
 			case(op) 
@@ -98,9 +103,13 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				`NOS <= `TOS;
 			end
 			`RET: begin
+				if(`RTOS === 16'bx) $finish();
 				
-				rpop(ip);
-			
+				ip <= `RTOS;
+				address <= 0;
+				$display("Rpop: %d",`RTOS);
+				rsp <= rsp - 1;
+				
 			end
 			`LT: begin
 				reg result;
@@ -136,7 +145,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			`LSHIFT: pop2push(`NOS << `TOS);
 			`RSHIFT: pop2push(`NOS >> `TOS);
 			`MUL: pop2push(`TOS * `NOS);
-			`MEMFETCH: begin
+			/*`MEMFETCH: begin
 				reg [15:0] temp3;
 				extra_cycle = 1;
 				
@@ -154,7 +163,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				
 				pop(data_out);
 				
-			end
+			end*/
 			endcase
 			if(extra_cycle) state = `byte_cycle2;
 			else
@@ -184,8 +193,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				state <= `byte_cycle1;
 				$display("next_byte");
 			end
-			address[14:0] = ip[15:1];
-			address[15] = 0;
+			address <= ip >> 1;
 			
 		end
 		default: state <= 0;
