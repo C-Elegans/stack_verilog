@@ -11,10 +11,12 @@ wire [7:0] led_in;
 int prevtime;
 integer values[32];
 reg [4:0] vp;
+reg not_under_test;
 initial begin
 	clk = 0;
 	prevtime = 0;
 	vp = 0;
+	not_under_test = 0;
 end
 cpu u0 (.clk(clk), 
 		.address(address), 
@@ -35,6 +37,6 @@ always #1 begin
 always @(posedge Lr) if(Lr) begin
 		$display("%d, cycle %d",led_in, $time-prevtime);
 		prevtime = $time;
-		`lassert(values[vp]);
+		if(!not_under_test)`lassert(values[vp]);
 	vp <= vp + 1;
 	end
