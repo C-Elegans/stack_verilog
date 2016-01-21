@@ -3,16 +3,27 @@ module jumptest();
 `include "../testinclude.vh"
 initial $readmemh("jumps.hex",Mem);
 
+integer values[8];
+reg [2:0] vp;
 initial #1000 $finish();
 initial begin
-#56 `lassert(1);
-#98 `lassert(2);
-#98 `lassert(3);
-#98 `lassert(4);
-#98 `lassert(5);
-#98 `lassert(6);
-#60 `lassert(10);
-#28 `lassert(50);
+vp = 0;
+values[0] = 1;
+values[1] = 2;
+values[2] =3;
+values[3] =4;
+values[4]=5;
+values[5]=6;
+values[6]=10;
+values[7]=50;
+
+end
+
+always @(posedge Lr) begin
+	`lassert(values[vp]);
+	vp <= vp + 1;
+
+
 end
 
 endmodule 
