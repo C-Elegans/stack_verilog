@@ -51,15 +51,15 @@ task rpush;
 	input [15:0] val;
 	begin
 	rstack[rsp] <= val;
-	rsp = rsp + 1;
+	rsp <= rsp + 1;
 	end
 endtask
 
 task rpop;
 	output [15:0] val;
 	begin
-	rsp = rsp - 1;
-	val = rstack[rsp];
+	rsp <= rsp - 1;
+	val <= rstack[rsp];
 	$display("Rpop: %d",val);
 	end
 endtask
