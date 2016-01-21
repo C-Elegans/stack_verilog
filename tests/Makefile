@@ -3,13 +3,14 @@ COPY=objcopy
 ifeq ($(OS),Darwin)
 	COPY=gobjcopy
 endif
-TESTS = add.test sub.test stack.test bits.test
+TESTS = add.test sub.test stack.test bits.test jumps.test
 all: $(TESTS)
 	
 
 %.test: %.v %.hex ../testinclude.vh ../cpu.v
 	iverilog -g 2012 -g assertions -g verilog-ams -Wall -I ../ -o $@  ../cpu.v $<
 	vvp $@	
+	rm $@
 %.hex:%.or
 	dump $< > $@
 	

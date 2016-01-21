@@ -19,4 +19,4 @@ clean:
 	-rm mem.hex
 	-cd tests && make clean
 check:
-	cd tests && make
+	cd tests && make -j16 
