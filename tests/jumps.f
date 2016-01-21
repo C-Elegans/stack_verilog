@@ -1,4 +1,5 @@
 : ADD1 1 + . ;
-3 0 DO DUP . LOOP 
-5 ADD1
-3 ADD1
+
+6 0 DO DUP ADD1 LOOP 
+10 .
+1 2 < IF 50 . THEN
