@@ -29,9 +29,8 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 		
 		`fetch: begin
 			
-			extra_cycle = 0;
-			address[14:0] = ip[15:1];
-			address[15] = 0;
+			extra_cycle <= 0;
+			address <= ip >> 1;
 			instruction <= data_in;
 			op <= data_in[15:8];
 			if(data_in === 16'bx && address != 0) $finish();
@@ -67,9 +66,9 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			end
 			else begin //cjump
 				reg [15:0] temp;
-				pop(temp);
+				popn();
 				//$display("Condition: %d",temp);
-				if(temp == 0) begin
+				if(`TOS == 0) begin
 					$display("Branch Taken");
 					temp = {{3{instruction[12]}},instruction[12:0]};
 					ip <= ip + temp -2;

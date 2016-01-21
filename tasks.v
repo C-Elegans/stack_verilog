@@ -21,16 +21,16 @@ task push;
 input [15:0] val;
 	begin
 	//$display("push %d  sp: %d",val,sp);
-	stack[sp] = val;
-	sp = sp + 1;
+	stack[sp] <= val;
+	sp <= sp + 1;
 	end
 endtask
 
 task pop;
 	output [15:0] val;
 	begin
-	sp = sp - 1;
-	val = stack[sp];
+	sp <= sp - 1;
+	val <= stack[sp];
 	end
 endtask
 task popn;
@@ -42,8 +42,8 @@ endtask
 task pop2push;
 	input [15:0] val;
 	begin
-	sp = sp - 2;
-	push(val);
+	sp <= sp - 1;
+	`NOS <= val;
 	end
 endtask
 
