@@ -17,6 +17,11 @@ begin
 for(int i=0;i<sp;i++) $display("stack[%d]: %d",i,stack[i]);
 end
 endtask
+task print_rstack; 
+begin
+for(int i=0;i<rsp;i++) $display("rstack[%d]: %d",i,rstack[i]);
+end
+endtask
 task push;
 input [15:0] val;
 	begin
@@ -42,6 +47,7 @@ endtask
 task pop2push;
 	input [15:0] val;
 	begin
+	
 	sp <= sp - 1;
 	`NOS <= val;
 	end
@@ -50,6 +56,7 @@ endtask
 task rpush;
 	input [15:0] val;
 	begin
+	
 	rstack[rsp] <= val;
 	rsp <= rsp + 1;
 	end
@@ -58,8 +65,9 @@ endtask
 task rpop;
 	output [15:0] val;
 	begin
+	print_rstack();
 	rsp <= rsp - 1;
-	val <= rstack[rsp];
-	$display("Rpop: %d",val);
+	val <= rstack[rsp-1];
+	
 	end
 endtask

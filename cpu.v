@@ -117,11 +117,11 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			`NEG: `TOS <= ~`TOS;
 			`RPUSH: begin
 				rpush(`TOS);
-				sp = sp - 1;
+				sp <= sp - 1;
 			end
 			`RPOP: begin
-				sp = sp + 1;
-				rpop(`TOS);
+				push(`RTOS);
+				rsp <= rsp - 1;
 			end
 			`RCP: push(`RTOS);
 			`AND: pop2push(`TOS & `NOS);
@@ -150,7 +150,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				
 			end*/
 			endcase
-			if(extra_cycle) state = `byte_cycle2;
+			if(extra_cycle) state <= `byte_cycle2;
 			else
 				if(ip[0])
 				state <= 0;
