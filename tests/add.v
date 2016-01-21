@@ -5,8 +5,8 @@ initial $readmemh("add.hex",Mem);
 
 initial #1000 $finish();
 initial begin
-#26 `assert (led_in == 4);
-#22 `assert (led_in == 17);
+values[0] = 4;
+values[1] =17;
 end
 
 

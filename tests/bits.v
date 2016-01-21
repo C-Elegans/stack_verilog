@@ -5,10 +5,12 @@ initial $readmemh("bits.hex",Mem);
 
 initial #100 $finish();
 initial begin
-#26 `lassert(4);
-#14 `lassert(31);
-#10	`lassert(242);
-#14 `lassert(26);
+
+values[0] = 4;
+values[1] = 31;
+values[2] =242;
+values[3] =26;
+
 end
 
 
