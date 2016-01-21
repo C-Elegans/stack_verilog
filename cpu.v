@@ -111,24 +111,9 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				rsp <= rsp - 1;
 				
 			end
-			`LT: begin
-				reg result;
-				result = `NOS < `TOS;
-				sp = sp - 2;
-				push({16{result}});
-			end
-			`GT: begin
-				reg result;
-				result = `NOS > `TOS;
-				sp = sp - 2;
-				push({16{result}});
-			end
-			`EQ: begin
-				reg result;
-				result = `NOS == `TOS;
-				sp = sp - 2;
-				push({16{result}});
-			end
+			`LT: pop2push({16{`NOS < `TOS}});
+			`GT: pop2push({16{`NOS > `TOS}});
+			`EQ: pop2push({16{`NOS == `TOS}});
 			`NEG: `TOS <= ~`TOS;
 			`RPUSH: begin
 				rpush(`TOS);
