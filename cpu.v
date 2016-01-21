@@ -32,11 +32,24 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			extra_cycle <= 0;
 			address <= ip >> 1;
 			instruction <= data_in;
-			op <= data_in[15:8];
+			
 			if(data_in === 16'bx && address != 0) $finish();
 			if(data_in[15:13]) state <= `word_cycle1;
-			else state <= `byte_cycle1;
-			
+			else begin
+			if(data_in[15:8])begin 
+				op <= data_in[15:8];
+				state <= `byte_cycle1;
+			end
+			else if(data_in[7:0]) begin
+				op<= data_in[7:0];
+				ip<=ip+1;
+				state <= `byte_cycle1;
+			end
+			else begin
+				ip <= ip + 2;
+				state <= `fetch;
+			end
+			end
 			end
 		`word_cycle1: begin
 			//$display("instruction %x, ip: %d",instruction,ip);
