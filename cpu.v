@@ -143,7 +143,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			`LSHIFT: pop2push(`NOS << `TOS);
 			`RSHIFT: pop2push(`NOS >> `TOS);
 			`MUL: pop2push(`TOS * `NOS);
-			/*`MEMFETCH: begin
+			`MEMFETCH: begin
 				reg [15:0] temp3;
 				extra_cycle = 1;
 				
@@ -161,7 +161,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 				
 				pop(data_out);
 				
-			end*/
+			end
 			endcase
 			if(extra_cycle) state <= `byte_cycle2;
 			else
