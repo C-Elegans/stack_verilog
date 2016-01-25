@@ -105,6 +105,7 @@ module cpu(clk, address, data_in, data_out, LEDS, wr, Lr);
 			`ADD:pop2push(`TOS + `NOS);
 			`SUB:pop2push(`NOS - `TOS);
 			`DUP:push(`TOS);
+			`DROP:sp<= sp - 1;
 			`SWAP:begin
 				`TOS <= `NOS;
 				`NOS <= `TOS;
