@@ -38,4 +38,4 @@
 `define PUSH 128
 
 `define assert(condition) if(condition === 0) begin $error("Assertion failed");$fatal(0,-1); end
-`define lassert(value) if(led_in !== value) begin $error("Assertion failed");$fatal(0,-1); end
+`define lassert(value) if(led_in !== value) begin $error("Assertion failed %d != %d",led_in,value);$fatal(0,-1); end

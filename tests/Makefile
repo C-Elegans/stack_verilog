@@ -14,7 +14,7 @@ all: $(TESTS)
 %.hex:%.or
 	dump $< > $@
 %.d: %.f
-	gforth -e "`cat $< ` BYE" > $@
+	gforth -e "`cat $< ` BYE" |dec2byte> $@
 %.val: %.d
 	echo -e "obase=16; `cat $<`" | tr ' ' '\n'| bc | tail -n +2> $@
 	
