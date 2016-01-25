@@ -11,6 +11,8 @@ all: $(TESTS)
 	iverilog -g 2012 -g assertions -g verilog-ams -Wall -I ../ -o $@  ../cpu.v $<
 	vvp $@	
 	rm $@
+jumps.val:
+	
 %.hex:%.or
 	dump $< > $@
 %.d: %.f

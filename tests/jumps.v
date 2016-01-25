@@ -13,8 +13,8 @@ values[2] =3;
 values[3] =4;
 values[4]=5;
 values[5]=6;
-values[6]=10;
-values[7]=50;
+
+values[6]=50;
 
 end
 
